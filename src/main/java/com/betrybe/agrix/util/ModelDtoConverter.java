@@ -6,6 +6,9 @@ import com.betrybe.agrix.controller.dto.FarmBodyDto;
 import com.betrybe.agrix.controller.dto.FarmDto;
 import com.betrybe.agrix.controller.dto.FertilizerBodyDto;
 import com.betrybe.agrix.controller.dto.FertilizerDto;
+import com.betrybe.agrix.controller.dto.PersonBodyDto;
+import com.betrybe.agrix.controller.dto.PersonDto;
+import com.betrybe.agrix.ebytr.staff.entity.Person;
 import com.betrybe.agrix.models.entities.Crops;
 import com.betrybe.agrix.models.entities.Farms;
 import com.betrybe.agrix.models.entities.Fertilizers;
@@ -91,6 +94,28 @@ public class ModelDtoConverter {
       fertilizer.getName(),
       fertilizer.getBrand(),
       fertilizer.getComposition()
+    );
+  }
+
+  /**
+   * Convert from dto to model.
+   */
+  public static Person dtoToPerson(PersonBodyDto dto) {
+    Person person = new Person();
+    person.setUsername(dto.username());
+    person.setPassword(dto.password());
+    person.setRole(dto.role());
+    return person;
+  }
+
+  /**
+   * Convert from model to dto.
+   */
+  public static PersonDto personToDto(Person person) {
+    return new PersonDto(
+      person.getId(),
+      person.getUsername(),
+      person.getRole()
     );
   }
 
