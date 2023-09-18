@@ -30,8 +30,4 @@ public class ControllerAdviceEx {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fertilizante não encontrado!");
   }
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<String> handleException() {
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno!");
-  }
 }
