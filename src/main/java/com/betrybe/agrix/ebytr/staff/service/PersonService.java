@@ -4,10 +4,7 @@ import com.betrybe.agrix.ebytr.staff.entity.Person;
 import com.betrybe.agrix.ebytr.staff.exception.PersonNotFoundException;
 import com.betrybe.agrix.ebytr.staff.repository.PersonRepository;
 import java.util.Optional;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -41,13 +38,6 @@ public class PersonService implements UserDetailsService {
 
     return person.get();
   }
-
-  /**
-   * Returns a person for a given username.
-   */
-//  public UserDetails getPersonByUsername(String username) throws UsernameNotFoundException {
-//    return personRepository.findByUsername(username);
-//  }
 
   /**
    * Creates a new person.

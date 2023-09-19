@@ -16,40 +16,55 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Classe de configuração de segurança da aplicação.
+ */
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
-    private final Filter securityFilter;
+  private final CustomFilter securityFilter;
+   
+  @Autowired
+  public SecurityConfiguration(CustomFilter securityFilter) {
+    this.securityFilter = securityFilter;
+  }
 
-    @Autowired
-    public SecurityConfiguration(Filter securityFilter) {
-        this.securityFilter = securityFilter;
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/persons").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .anyRequest().authenticated()
+  /**
+   * Configuração de segurança para a aplicação. 
+   */
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    return httpSecurity
+              .csrf(AbstractHttpConfigurer::disable)
+              .sessionManagement(session -> session.sessionCreationPolicy(
+                SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+              .authorizeHttpRequests(authorize -> authorize
+                      .requestMatchers(HttpMethod.POST, "/persons").permitAll()
+                      .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                      .anyRequest().authenticated()
+              )
+              .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+              .build();
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+  /**
+   * Configuração de autenticação para a aplicação. 
+   */
+  @Bean
+  public AuthenticationManager authenticationManager(
+      AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  /**
+   * Configuração de criptografia para a aplicação. 
+   */
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
 }
